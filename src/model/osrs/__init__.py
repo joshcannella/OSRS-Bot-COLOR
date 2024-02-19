@@ -1,3 +1,3 @@
 from .combat.combat import OSRSCombat
 from .woodcutter import OSRSWoodcutter
-from .mining import OSRS_Mining
+from .furnace_bot import OSRSFurnaceBot
