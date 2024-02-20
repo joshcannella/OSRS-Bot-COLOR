@@ -12,9 +12,12 @@ from utilities.geometry import Rectangle
 # materials
 GOLD_BAR_NAME = "Gold bar"
 SAPPHIRE_NAME = "Sapphire"
+DIAMOND_NAME = "Diamond"
+
 # crafted items
 GOLD_AMULET_U_NAME = "Gold amulet (u)"
 SAPPHIRE_RING_NAME = "Sapphire ring"
+DIAMOND_NECKLACE_NAME = "Diamond necklace"
 
 class Item(NamedTuple):
     """Represents an item in the game."""
@@ -49,6 +52,11 @@ class CraftItem:
             return [
                 Item(name=GOLD_BAR_NAME, id=ids.GOLD_BAR),
                 Item(name=SAPPHIRE_NAME, id=ids.SAPPHIRE)
+                ]
+        elif self.item.id == ids.DIAMOND_NECKLACE:
+            return [
+                Item(name=GOLD_BAR_NAME, id=ids.GOLD_BAR),
+                Item(name=DIAMOND_NAME, id=ids.DIAMOND)
                 ]
         else:
             return []
@@ -98,7 +106,7 @@ class OSRSFurnaceBot(OSRSBot):
         unpack the dictionary of options after the user has selected them.
         """
         self.options_builder.add_slider_option("running_time", "How long to run (minutes)?", 30, 720)
-        self.options_builder.add_dropdown_option("craft_item", "Craft Item", [GOLD_AMULET_U_NAME, SAPPHIRE_RING_NAME])
+        self.options_builder.add_dropdown_option("craft_item", "Craft Item", [GOLD_AMULET_U_NAME, SAPPHIRE_RING_NAME, DIAMOND_NECKLACE_NAME])
 
     def save_options(self, options: dict):
         """
@@ -164,7 +172,7 @@ class OSRSFurnaceBot(OSRSBot):
             # -- Perform bot actions here --
 
             self.log_msg(f"State: {state}")
-            
+
             inv = api_m.get_inv()
             last_item = next((item for item in inv if item["index"] == last_craft_item_index), None)
             if last_item_id := last_item["id"] if last_item else None:
@@ -217,8 +225,7 @@ class OSRSFurnaceBot(OSRSBot):
                         time.sleep(1)
                     else:
                         self.__logout(f"Material {material.name} not found.")
-                    
-                
+
                 # 3. exit ui: click close icon
                 self.__exit_bank()
 
@@ -239,6 +246,8 @@ class OSRSFurnaceBot(OSRSBot):
             return CraftItem(Item(name=GOLD_AMULET_U_NAME, id=ids.GOLD_AMULET_U))
         elif item_name == SAPPHIRE_RING_NAME:
             return CraftItem(Item(name=SAPPHIRE_RING_NAME, id=ids.SAPPHIRE_RING))
+        elif item_name == DIAMOND_NECKLACE_NAME:
+            return CraftItem(Item(name=DIAMOND_NECKLACE_NAME, id=ids.DIAMOND_NECKLACE))
         else:
             return None
 
