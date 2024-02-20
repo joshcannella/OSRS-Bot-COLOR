@@ -210,7 +210,7 @@ class OSRSFurnaceBot(OSRSBot):
                 # deposit all crafted items and withdraw materials
 
                 # 1. deposit: click on craft item in inventory
-                self.mouse.move_to(self.win.inventory_slots[4].random_point())
+                self.mouse.move_to(self.win.inventory_slots[0].random_point())
                 self.mouse.click()
                 time.sleep(1)
 
@@ -305,6 +305,9 @@ class OSRSFurnaceBot(OSRSBot):
                 return False
         else:
             return False
+        
+    def __is_bank_open(self) -> bool:
+        return self.win.game_view
 
     def __exit_bank(self):
         """
